@@ -1,151 +1,89 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import * as destinationActions from '../actions/destinationActions';
-
+import config from '../../config/config';
+import axios from 'axios';
 class Home extends React.Component{
-constructor(props){
-	super(props);
-	this.state = {
-		city:'',
-		loader:'hide',
-		notFound:'hide'
-	};
-	this.findDestinations = this.findDestinations.bind(this);
+
+submitRequest(){
+const data = {};
+data.ORDER_ID = this.refs.ORDER_ID.value;
+data.CUST_ID = this.refs.CUST_ID.value;
+data.INDUSTRY_TYPE_ID = this.refs.INDUSTRY_TYPE_ID.value;
+data.CHANNEL_ID = this.refs.CHANNEL_ID.value;
+data.TXN_AMOUNT = this.refs.TXN_AMOUNT.value;
+data.PAYTM_MERCHANT_KEY = this.refs.PAYTM_MERCHANT_KEY.value;
+data.WEBSITE = this.refs.WEBSITE.value;
+data.MID = this.refs.MID.value;
+axios.post('/testTxn', data)
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
 
-findDestinations(){
-	if(this.refs.name.value){
-		this.setState({ city: this.refs.name.value,loader:'show',notFound:'hide'});
-		this.props.getDestinations(this.refs.name.value);
-	}
-}
-componentWillReceiveProps(newProps) {    
-	this.setState({loader:'hide'});
-	console.log(newProps.destinations);
-	if(newProps.destinations.length){
-		this.setState({notFound:'hide'});
-	}else{
-		this.setState({notFound:'show'});
-	}
-}
 	render(){
 		return (
-			<div>
-				 <div className="section no-pad-bot" id="index-banner">
-				    <div className="container">
-				    	<h5>Welcome to the city view, to find top destinations for a city type the name of the city below and get all the top destinations for that city.</h5>
-				      <br/><br/>
-				      <h3 className="header center orange-text">Please enter place name</h3>
-				      <div className="row center">
-				        <div className="row">
-						    <form className="col s12">
-						      <div className="row">
-						        <div className="input-field col s12">
-						          <input ref="name" type="text" className="validate center-align" />
-						        </div>
-						      </div>
-						    </form>
-						  </div>
-				      </div>
-				      <div className="row center">
-				        <button type="button" onClick={this.findDestinations} className="btn-large waves-effect waves-light orange">View</button>
-				      </div>
-				      <br/>
-				      <br/>
-
-				    </div>
-				  </div>
-					<div className={this.state.loader+" center-align"}>
-						<div className="preloader-wrapper big active center-align">
-							<div className="spinner-layer spinner-blue-only">
-								<div className="circle-clipper left">
-									<div className="circle"></div>
-								</div><div className="gap-patch">
-									<div className="circle"></div>
-								</div><div className="circle-clipper right">
-									<div className="circle"></div>
-								</div>
-							</div>
+			<div >
+				<h2>Transaction Details</h2>
+				<form className="form-horizontal" name="checkoutForm" id="form1" method="post" action="/testtxn">
+					<div className="form-group">
+						<label className="control-label col-sm-2">ORDER_ID:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control"  name="ORDER_ID" value={Date.now() + Math.random().toString(36).substr(2, 9)}/>
+						</div>
+					</div>					
+					<div className="form-group">
+						<label className="control-label col-sm-2">CUSTOMER_ID:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control"  name="CUST_ID" value={Date.now() + Math.random().toString(36).substr(2, 9)}/>
 						</div>
 					</div>
-					<div className={this.state.notFound+' center-align'}>
-						<h4 >No destinations found for this Entry</h4>
-					</div>
-					<div className="row">
-						<div className="col s6 offset-s3">
-							<ul className="collapsible" data-collapsible="accordion">
-								<div className={this.props.destinations.length ? '':'hide' }>
-								<h3 className="header center orange-text">Top destinations in {this.state.city}</h3>
-								</div>
-								{this.props.destinations.map((b, i) => 
-									<li key={i}>
-											<div className="collapsible-header">{b.name}</div>
-											<div className="collapsible-body orange-text">
-												<span>Name:<label className="blue-text">{b.name}</label></span><br/>
-												<span>Address:<label className="blue-text">{b.formatted_address}</label></span><br/>
-												<span>Place Rating:<label className="blue-text">{b.rating}</label></span><br/>
-											</div>
-										</li>
-									)
-								}
-								</ul>
+					<div className="form-group">
+						<label className="control-label col-sm-2">INDUSTRY_TYPE_ID:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control"  name="INDUSTRY_TYPE_ID" value={config.INDUSTRY_TYPE_ID}/>
 						</div>
 					</div>
-				  <footer className="page-footer orange">
-				    <div className="container">
-				      <div className="row">
-				        <div className="col l6 s12">
-				          <h5 className="white-text">Company Bio</h5>
-				          <p className="grey-text text-lighten-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-
-
-				        </div>
-				        <div className="col l3 s12">
-				          <h5 className="white-text">Settings</h5>
-				          <ul>
-				            <li><a className="white-text" href="#!">Link 1</a></li>
-				            <li><a className="white-text" href="#!">Link 2</a></li>
-				            <li><a className="white-text" href="#!">Link 3</a></li>
-				            <li><a className="white-text" href="#!">Link 4</a></li>
-				          </ul>
-				        </div>
-				        <div className="col l3 s12">
-				          <h5 className="white-text">Connect</h5>
-				          <ul>
-				            <li><a className="white-text" href="#!">Link 1</a></li>
-				            <li><a className="white-text" href="#!">Link 2</a></li>
-				            <li><a className="white-text" href="#!">Link 3</a></li>
-				            <li><a className="white-text" href="#!">Link 4</a></li>
-				          </ul>
-				        </div>
-				      </div>
-				    </div>
-				    <div className="footer-copyright">
-				      <div className="container">
-				      Made by <a className="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-				      </div>
-				    </div>
-				  </footer>
+					<div className="form-group">
+						<label className="control-label col-sm-2">CHANNEL:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control" name="CHANNEL_ID" value={config.CHANNEL_ID}/>
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="control-label col-sm-2">TRANSACTION_AMOUNT:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control"  name="TXN_AMOUNT" value="125"/>
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="control-label col-sm-2">PAYTM_MERCHANT_KEY:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control" name="PAYTM_MERCHANT_KEY" value={config.PAYTM_MERCHANT_KEY}/>
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="control-label col-sm-2">WEBSITE:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control"  name="WEBSITE" value={config.WEBSITE}/>
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="control-label col-sm-2">MID:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control" name="MID" value={config.MID}/>
+						</div>
+					</div>
+					<div className="form-group">        
+						<div className="col-sm-offset-2 col-sm-10">
+							<button type="submit" className="btn btn-default" >Checkout</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		);
 	}
 }
 
-// Maps state from store to props
-const mapStateToProps = (state, ownProps) => {
-  return {
-    // You can now say this.props.books
-    destinations: state.destinations
-  }
-};
-
-// Maps actions to props
-const mapDispatchToProps = (dispatch) => {
-  return {
-  // You can now say this.props.createBook
-    getDestinations: destinations => dispatch(destinationActions.getDestinations(destinations))
-  }
-};
-
-// Use connect to put them together
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;

@@ -1,12 +1,12 @@
 {
-  "name": "cityView",
+  "name": "paytm",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-   "scripts": {
-    "start": "webpack && babel-node server.js",
+  "scripts": {
+    "start": "webpack && node server.js",
     "build": "webpack",
-    "server": "webpack && babel-node server.js"
+    "server": "webpack && node server.js"
   },
   "babel": {
     "presets": [
@@ -14,9 +14,9 @@
     ]
   },
   "keywords": [],
-  "author": "",
+  "author": "MordenTree",
   "license": "ISC",
-    "devDependencies": {
+  "devDependencies": {
     "babel-cli": "6.16.0",
     "babel-core": "6.17.0",
     "babel-loader": "6.2.5",
@@ -32,8 +32,12 @@
     "webpack-validator": "2.2.9"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "1.15.2",
+    "ejs": "^2.5.7",
     "express": "4.14.0",
+    "express-react-engine": "^1.0.0",
+    "express-react-view-engine": "^0.4.1",
     "immutable": "3.8.1",
     "install": "0.8.1",
     "morgan": "1.7.0",

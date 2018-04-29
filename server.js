@@ -1,11 +1,12 @@
-import express from 'express';
-import morgan from 'morgan';
-import bodyParser from 'body-parser';
-import request from 'request';
- 
+var express =require( 'express');
+var morgan =require( 'morgan');
+var bodyParser =require( 'body-parser');
+var request =require( 'request');
+var router = express.Router();
+var ReactEngine = require('express-react-engine');
 const app = express();
 const port = process.env.PORT || 8080;
-const googleApikey = 'AIzaSyAG9vvQPxO1MtrZhwhP7j-CvXkYZidfmEE';
+
 // Log with Morgan
 app.use(morgan('dev'));
  
@@ -35,22 +36,13 @@ app.use(express.static(__dirname + '/dist'));
     next();
 });
 
-app.get('/',function(req,res){
-     res.sendFile(__dirname+'/dist/index.html');
-});
-
+app.use(router);
+require('./routes/admin/testtxn')(app);
+require('./routes/admin/pgredirect')(app);
+require('./routes/admin/response')(app);
+app.set('views', __dirname + '/src/components');
+app.engine('jsx', ReactEngine());
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-app.get('/getDestinations',function(req,res){
-	var cityName = req.query.city;
-    request('https://maps.googleapis.com/maps/api/place/textsearch/json?query=tourist+places+in+' + cityName + '+&key=' + googleApikey, function(error, response, result) {
-    	if (!error && response.statusCode == 200) {
-    		var data = JSON.parse(result);
-    		res.json({status:200,data:data.results});
-    	}else{
-    		res.json({status:400})
-    	}
-	});
-});
 
  app.get('*',function(req,res){
      res.sendFile(__dirname+'/dist/index.html');

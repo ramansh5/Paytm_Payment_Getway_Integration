@@ -1,37 +1,10 @@
+# Installation Steps
 
-# React Redux Nodejs Sample application
+1. Copy the 'paytm' folder, index.js, router.js and server.js into your project directory.
+2. Please set the required parameters in 'paytm/paytm_config.js' file. These parameters will be received after completing the registration process with Paytm.
+3. For the Generate Checksum URL, please use the case for '/generate_checksum' in the router.js file. For example, a generate checksum URL may look like yoursite/generate_checksum
+4. For the Verify Checksum URL, please use the case for '/verify_checksum' in the router.js file. For example, a verify checksum URL may look like yoursite/verify_checksum
 
-This application shows all the top destinations for a place. 
-
-## Getting Started
-
-To get started, first install all the necessary dependencies.
-
-```
-> Nodejs
-```
-
-```
-> React
-```
-
-```
-> Redux
-```
-
-```
-> webpack and babel
-```
-
-To install dependencies run the following command
-
-```  
-> npm install
-```
-
-Start the development server (changes will now update live in browser)
-```
-> npm start
-```
-
-To view your project, go to: [http://localhost:8080/]
+# For Offline(Wallet Api) Checksum Utility below are the methods:
+  1. genchecksumbystring : For generating the checksum
+  2. verifychecksumbystring : For verifing the checksum
